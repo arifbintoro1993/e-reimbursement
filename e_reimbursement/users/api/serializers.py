@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from e_reimbursement.employees.models import Employee
+
 User = get_user_model()
 
 
@@ -17,7 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        pass
+        email = validated_data.pop("email")
+        employee_data = validated_data.pop('employee')
+        employee = Employee.objects.create(**employee_data)
+        count = User.objects.count()
+        user = User.objects.create_employee(email=email, employee=employee, count=count)
+        return user
 
     def update(self, instance, validated_data):
         instance.email = validated_data.pop("email")

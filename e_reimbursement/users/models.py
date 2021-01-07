@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models import CharField
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from django.utils.crypto import get_random_string
 
 from django_multitenant.models import TenantManager
 
@@ -38,6 +37,15 @@ class UserManager(BaseUserManager, TenantManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
+    def create_employee(self, email=None, password=None, count=0, **extra_fields):
+        email = self.normalize_email(email)
+        count = "{0:0=4d}".format(count + 1)
+        username = "{}{}".format("employee", count)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(get_random_string(length=6))
+        user.save(using=self._db)
+        return user
 
 
 class User(EmployeeTenantModel, AbstractUser):

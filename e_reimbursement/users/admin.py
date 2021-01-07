@@ -12,8 +12,8 @@ class UserAdmin(auth_admin.UserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    fieldsets = (("User", {"fields": ("name",)}),) + tuple(
+    fieldsets = tuple(
         auth_admin.UserAdmin.fieldsets
     )
-    list_display = ["username", "name", "is_superuser"]
-    search_fields = ["name"]
+    list_display = ["username", "email", "is_superuser", "is_staff"]
+    search_fields = ["username"]

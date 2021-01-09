@@ -5,6 +5,7 @@ from django.utils.crypto import get_random_string
 from django_multitenant.models import TenantManager
 
 from e_reimbursement.core.models import EmployeeTenantModel
+from e_reimbursement.users.tasks import send_email_created_user_info
 
 
 class UserManager(BaseUserManager, TenantManager):
@@ -43,8 +44,15 @@ class UserManager(BaseUserManager, TenantManager):
         count = "{0:0=4d}".format(count + 1)
         username = "{}{}".format("employee", count)
         user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(get_random_string(length=6))
+        password_temp = get_random_string(length=6)
+        user.set_password(password_temp)
         user.save(using=self._db)
+
+        send_email_created_user_info.delay(
+            username,
+            password_temp,
+            email,
+        )
         return user
 
 

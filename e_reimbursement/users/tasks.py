@@ -1,11 +1,21 @@
-from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
+from django.conf import settings
+from django.core.mail import send_mail
 
-from config import celery_app
-
-User = get_user_model()
+from celery import shared_task
 
 
-@celery_app.task()
-def get_users_count():
-    """A pointless Celery task to demonstrate usage."""
-    return User.objects.count()
+@shared_task(bind=True, max_retries=5)
+def send_email_created_user_info(self, username, password, email):
+    try:
+        msg_subject = 'E-reimbursemet login information'
+        msg_recipient = email
+        msg_plain = render_to_string(
+            'email/email.html',
+            {'username': username, 'password': password, 'email': email}
+        )
+        send_mail(msg_subject, msg_plain, settings.DEFAULT_FROM_EMAIL, [msg_recipient], html_message=msg_plain,)
+
+    except Exception as e:
+        print(e)
+        self.retry(countdown=2 ** self.request.retries)

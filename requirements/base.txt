@@ -35,3 +35,9 @@ django-imagekit==4.0.2  # https://github.com/matthewwithanm/django-imagekit
 
 # Django braces
 django-braces==1.14.0  # https://github.com/brack3t/django-braces
+
+# libsass
+libsass==0.20.0  # https://github.com/sass/libsass-python
+
+# django sass processor
+django-sass-processor==0.8  # https://github.com/jrief/django-sass-processor

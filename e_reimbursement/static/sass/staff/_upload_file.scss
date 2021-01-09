@@ -1,0 +1,123 @@
+.image-upload {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+  .dropzone-image{
+  background: $inactive-grey;
+  border-radius: $border-radius-default;
+  width: fit-content;
+    img{
+    width: 100px;
+    display:block;
+    margin:10% auto;
+    max-height: 100px;
+    }
+  }
+}
+
+.image-upload-formset {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 5px;
+  margin-left: 5px;
+  .dropzone-image{
+    background: $inactive-grey;
+    border-radius: $border-radius-default;
+    width: fit-content;
+    img{
+    display:block;
+    width: 50px;
+    height: 50px;
+    max-width: 50px;
+    max-height: 50px;
+    }
+  }
+}
+
+.decorated_div_formset{
+  background-color: $white;
+  border: 1px solid #ced4da;
+  border-radius: $border-radius-default;
+  padding: 5px 10px;
+}
+
+.dropzone-input-formset {
+  outline: none !important;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+  min-height: 50px;
+}
+
+.dashed-border {
+  border:1px dashed $inactive-grey;
+  border-radius: $border-radius-default;
+}
+
+.text-helper{
+  padding-top:2%;
+}
+
+.decorated_div{
+  background-color: $white;
+  border: 1px solid $border-detail;
+  border-radius: $border-radius-default;
+  padding: 20px;
+  margin: 2% auto;
+}
+
+
+.dropzone-input {
+  outline: none !important;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+  min-height: 120px;
+}
+
+.upload-label {
+  position: absolute;
+  padding: 15px;
+}
+
+.dropzone {
+  border: 1px solid #ced4da !important;
+  border-radius: .5rem;
+  padding: 2rem !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  .dz-preview {
+    margin: .5rem !important;
+    .dz-image {
+      width: 128px !important;
+      height: auto !important;
+      border-radius: .5rem !important;
+      img {
+        width: 100%;
+      }
+    }
+    .dz-details {
+      padding: .5rem !important;
+      .dz-size {
+        margin-bottom: .5rem !important;
+      }
+    }
+  }
+}
+
+.upload-invalid {
+  .decorated_div {
+    border-color: $danger;
+    .dashed-border {
+      border-color: $danger;
+    }
+  }
+  .invalid-feedback {
+    display: block;
+  }
+}

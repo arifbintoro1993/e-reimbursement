@@ -1,0 +1,53 @@
+
+.btn-custom {
+  border: 1px solid #aeafb6;
+  background: #fff;
+  color: #353749;
+  &:hover{
+    box-shadow: 0 0.3rem 0.5rem rgba(0,0,0,.15)!important;
+    color: #353749;
+    border: 1px solid #8f909a;
+  }
+}
+
+.btn-group {
+  .delete-form {
+    .btn-custom {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.btn-custom-2{
+  background: #fff;
+  color: #353749;
+}
+
+.bootstrap-select {
+  .dropdown-toggle {
+    border: 0;
+    border-top: 1px solid #e6e7e9;
+    &.btn{
+      &:focus{
+        box-shadow: none;
+      }
+      &.focus{
+        box-shadow: none;
+      }
+    } 
+    &:focus {
+      outline: none !important;
+    }
+  }
+  > select{
+    &.mobile-device{
+      &:focus{
+        &+.dropdown-toggle{
+          outline: none !important;
+        }
+      }
+    }
+  }
+} 
+

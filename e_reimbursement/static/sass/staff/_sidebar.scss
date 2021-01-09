@@ -1,0 +1,138 @@
+.navbar-static-side {
+  z-index: 1001;
+  position: fixed;
+  width: $sidebar-width;
+  height: 100%;
+  min-height: calc(100vh - 40px);
+  background-color: white;
+
+  .nav {
+    display: block;
+    > li {
+      position: relative;
+      display: block;
+      border-left: white 3px solid;
+
+      > a {
+        position: relative;
+        display: flex;
+        color: $primary;
+        font-weight: 300;
+        padding: 14px 20px 14px 15px;
+        > span {
+          display: inline-block;
+          vertical-align: middle;
+          > i {
+            height: 14px;
+            width: 14px;
+            margin-right: 15px;
+          }
+        }
+        > .menu-arrow {
+            margin-left: auto;
+        }
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      &.active {
+        background: lighten($primary, 55%);
+        border-left: $primary 3px solid;
+      }
+
+      &.nav-header {
+        border-bottom: $sidebar-border-color 1px solid;
+        height: $sidebar-header-height;
+        > a {
+          color: $secondary;
+          display: block;
+          padding: 6px 0;
+          text-transform: uppercase;
+          text-align: center;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+
+.secondary-sidebar {
+	position: fixed;
+	left: $secondary-sidebar-position-left;
+	width: $secondary-sidebar-width-expand;
+	min-height: 100%;
+  background: white linear-gradient(180deg, rgba(238, 244, 246, 0.5), rgba(238, 244, 246, 0.65));
+	z-index: 1002;
+	transition:  margin 0.25s ease ;
+	-webkit-transition: margin 0.5s ease ;
+	-moz-transition: margin 0.5s ease ;
+  -ms-transition: margin 0.5s ease ;
+
+  &.expand {
+    visibility: visible;
+    width: $secondary-sidebar-width-expand;
+    margin-left: $secondary-sidebar-margin-left-expand;
+  }
+
+	span {
+		display: none;
+  }
+  
+	.collapse {
+		display: inline;
+  }
+  
+	.nav {
+		overflow: hidden;
+		flex-wrap: nowrap;
+		flex-direction: column;
+		> li {
+			-webkit-transition-duration: 0.25s;
+			-moz-transition-duration: 0.25s;
+			-o-transition-duration: 0.25s;
+			transition-duration: 0.25s;
+			transition-property: background;
+      -webkit-transition-property: background;
+      position: relative;
+      display: block;
+			> a {
+				display: -webkit-flex;
+				display: flex;
+				-webkit-align-items: center;
+				align-items: center;
+				white-space: nowrap;
+				-webkit-transition-duration: 0.45s;
+				-moz-transition-duration: 0.45s;
+				-o-transition-duration: 0.45s;
+				transition-duration: 0.45s;
+				transition-property: color;
+        -webkit-transition-property: color;
+        position: relative;
+        display: block;
+        color: $primary;
+        font-weight: 300;
+        padding: 14px 20px 14px 25px;
+				> i {
+          margin-right: 3px;
+        }
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      &.active {
+        background: lighten($primary, 55%);
+      }
+      &.nav-header {
+        border-bottom: $sidebar-border-color 1px solid;
+        height: $sidebar-header-height;
+        color: $secondary;
+        padding: 15px 0;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: 400;
+      }
+		}
+	}
+}

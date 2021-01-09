@@ -1,0 +1,114 @@
+form {
+  fieldset {
+    legend {
+      text-transform: capitalize;
+      color: $gray-600;
+      border-bottom: 1px solid $gray-400;
+      font-size: 1rem;
+      padding: (0.6666 * $grid-gutter-width / 2) 0;
+      margin-bottom: 1rem;
+    }
+
+    .help-section {
+      color: $gray-700;
+    }
+
+  }
+
+  label {
+    color: $gray-600;
+  }
+}
+
+.bulk-upload{
+  legend {
+    text-transform: capitalize;
+    color: $gray-600;
+    border-bottom: 1px solid $gray-400;
+    font-size: 1rem;
+    padding: (0.6666 * $grid-gutter-width / 2) 0;
+    margin-bottom: 1rem;
+  }
+
+  .help-section {
+    color: $gray-700;
+  }
+}
+
+.formset-footer {
+  color: inherit;
+  border-top: 1px solid $border-color;
+  padding: ($grid-gutter-width / 4) ($grid-gutter-width / 2);
+}
+
+.form-deleted {
+  display: none;
+  transition: all 0.4s;
+}
+
+.input-group-addon {
+  padding: 6px 8px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 0px;
+}
+.filter-form, .filter-update-form {
+  min-width: 20em;
+}
+
+.input-group > .form-control {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.input-group > .input-group-append > .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#complete_btn {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.bootstrap-select {
+  .dropdown-toggle {
+    height: $input-height !important;
+    border: 1px solid $gray-400;
+    &:focus {
+      outline-offset: -5px !important;
+    }
+  }
+}
+
+.ibox-content {
+  form {
+    .form-group{
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.custom-file-label {
+  height: unset;
+  &:after {
+    height: unset;
+  }
+}
+
+.dz-message{
+  #image-upload-logo {
+    background: #e6e7e9;
+    width: 100px;
+    border-radius: 5px;
+  }  
+}

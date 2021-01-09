@@ -302,6 +302,12 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
 INSTALLED_APPS += ["compressor"]
 STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
+# django-sass-processor
+# ------------------------------------------------------------------------------
+INSTALLED_APPS += ["sass_processor"]
+STATICFILES_FINDERS += ["sass_processor.finders.CssFinder"]
+SASS_PROCESSOR_AUTO_INCLUDE = False
+SASS_PRECISION = 8
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
@@ -317,6 +323,18 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+NON_AUTH_URL_NAME = [
+    LOGIN_URL,
+    'account_signup',
+    'account_email_verification_sent',
+    'account_confirm_email',
+    'account_reset_password',
+    'account_reset_password_done',
+    'account_reset_password_from_key',
+    'account_reset_password_from_key_done',
+
+    'static',
+]
 HIGH_DECIMAL_MAX_DIGITS = 19
 LOW_DECIMAL_MAX_DIGITS = 12
 DECIMAL_PLACES = 2

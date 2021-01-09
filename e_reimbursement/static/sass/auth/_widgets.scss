@@ -1,0 +1,88 @@
+.ibox {
+    clear: both;
+    margin-bottom: ($grid-gutter-width / 2);
+    margin-top: 0;
+    padding: 0;
+    @include box-shadow($ibox-shadow);
+    border-radius: $border-radius;
+    background: white;
+  }
+  
+  .ibox:after,
+  .ibox:before {
+    display: table;
+  }
+  
+  .ibox-title {
+    border-bottom: 1px solid $border-color;
+    color: inherit;
+    margin-bottom: 0;
+    padding: ($grid-gutter-width / 2);
+  
+    h5 {
+      display: inline-block;
+      color: $gray-600;
+      margin: 0;
+      padding: 0;
+      text-overflow: ellipsis;
+      float: left;
+    }
+  
+    .ibox-collapsible {
+      display: block;
+      color: $gray-600;
+      margin: 0;
+      text-overflow: ellipsis;
+      font-size: 1rem;
+  
+      .custom-control-label {
+        padding-left: 5px;
+  
+        &::before {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+  
+        &::after {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+    }
+  
+    .label {
+      float: left;
+      //margin-left: ($grid-gutter-width / 4)
+    }
+  
+    .ibox-tools {
+      display: block;
+      float: none;
+      margin-top: 0;
+      position: relative;
+      padding: 0;
+      text-align: right;
+  
+      a {
+        cursor: pointer;
+        margin-left: ($grid-gutter-width / 4);
+      }
+    }
+  }
+  
+  .ibox-content {
+    color: inherit;
+    padding: $spacer ($spacer * 1.25) ($spacer * 1.25) ($spacer * 1.25);
+  }
+  
+  .ibox-footer {
+    color: inherit;
+    border-top: 1px solid $border-color;
+    padding: ($spacer * 0.6666) $spacer;
+    text-align: right;
+  }
+  
+  .ibox-title-collapsible {
+    padding: (0.6666 * $grid-gutter-width / 2) ($grid-gutter-width / 2);
+  }
+  

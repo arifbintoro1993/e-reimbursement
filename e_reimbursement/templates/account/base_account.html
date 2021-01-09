@@ -1,0 +1,59 @@
+{% load static i18n sass_tags compress %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block title %}{% endblock title %} | E-Reimbursement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+
+  {% block css %}
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+        integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+    {% compress css %}
+
+    <link href="{% sass_src 'sass/auth.scss' %}" rel="stylesheet" type="text/css" />
+
+    {% endcompress %}
+  {% endblock %}
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="d-flex justify-content-center">
+      <div class="col-xs-12 col-xl-3 col-lg-4 col-md-6">
+        {% block inner %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+{% block modal %}{% endblock modal %}
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% block javascript %}
+
+  <!-- Required by Bootstrap v4.1.1 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+  <!-- Your stuff: Third-party javascript libraries go here -->
+
+  <!-- place project specific Javascript in this file -->
+  {% compress js %}
+    <script src="{% static 'js/project.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  {% endcompress %}
+
+{% endblock javascript %}
+</body>
+</html>
+

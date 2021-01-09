@@ -1,0 +1,190 @@
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap/root";
+@import "bootstrap/reboot";
+@import "bootstrap/type";
+@import "bootstrap/images";
+@import "bootstrap/code";
+@import "bootstrap/grid";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+@import "bootstrap/transitions";
+@import "bootstrap/dropdown";
+@import "bootstrap/button-group";
+@import "bootstrap/input-group";
+@import "bootstrap/custom-forms";
+@import "bootstrap/nav";
+@import "bootstrap/navbar";
+@import "bootstrap/card";
+@import "bootstrap/breadcrumb";
+@import "bootstrap/pagination";
+@import "bootstrap/badge";
+@import "bootstrap/jumbotron";
+@import "bootstrap/alert";
+@import "bootstrap/progress";
+@import "bootstrap/media";
+@import "bootstrap/list-group";
+@import "bootstrap/close";
+@import "bootstrap/modal";
+@import "bootstrap/tooltip";
+@import "bootstrap/popover";
+@import "bootstrap/carousel";
+@import "bootstrap/utilities";
+@import "bootstrap/print";
+@import "staff/variables";
+@import "staff/widgets";
+@import "staff/sidebar";
+@import "staff/page";
+@import "staff/tables";
+@import "staff/forms";
+@import "staff/tags";
+@import "staff/nav";
+@import "staff/select2";
+@import "staff/button";
+@import "staff/upload_file";
+
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: $background-color;
+  height: 100%;
+}
+
+// Main structure
+//------------------------------------------------------------------------------
+#wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.page-content {
+  position: relative;
+  margin: 0 0 0 $sidebar-width;
+  min-height: calc(100vh - 70px);
+  height: 100%;
+}
+
+#page-wrapper {
+  position: absolute;
+  padding: 0 15px;
+  //position: relative !important;
+  height: 100%;
+  width: 100%;
+}
+
+#sub-page-wrapper {
+  padding: 0 ($grid-gutter-width / 2);
+  margin: 0;
+  transition: all 0.4s;
+  position: relative !important;
+  overflow: hidden;
+}
+
+#page-wrapper.filter-on {
+  #sub-page-wrapper {
+    margin-left: $sidebar-width;
+  }
+
+  .navbar-filter-sidebar {
+    width: $sidebar-width;
+    border-right: $sidebar-border-color 1px solid;
+    padding: ($grid-gutter-width / 2);
+  }
+
+  #filter a {
+    background-color: $primary;
+    color: white;
+    box-shadow: none !important;
+  }
+
+  .filter-collapse {
+    opacity: 1;
+  }
+}
+
+.wrapper {
+  padding: ($grid-gutter-width / 2);
+}
+
+.wrapper-content {
+  padding: $grid-gutter-width ($grid-gutter-width / 2) $grid-gutter-width;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-box-shadow {
+  box-shadow: none;
+}
+
+.asteriskField {
+  color: $danger;
+}
+
+.smaller {
+  select.form-control {
+    @extend .form-control-sm;
+  }
+}
+
+.message-container {
+  .alert {
+    margin-top: ($grid-gutter-width / 2);
+    margin-bottom: 0;
+  }
+}
+
+#productvariantoptions_table {
+  td:first-child {
+    width: 30%;
+  }
+  td:last-child {
+    width: 5%;
+  }
+}
+
+#productvariants_table {
+  .form-check {
+    display: table-cell;
+  }
+}
+
+////////////////////////////////
+//Variables//
+////////////////////////////////
+
+// Alert colors
+
+$white: #fff;
+$mint-green: #d6e9c6;
+$black: #000;
+$pink: #f2dede;
+$dark-pink: #eed3d7;
+$red: #b94a48;
+
+////////////////////////////////
+//Alerts//
+////////////////////////////////
+
+// bootstrap alert CSS, translated to the django-standard levels of
+// debug, info, success, warning, error
+
+.alert-debug {
+  background-color: $white;
+  border-color: $mint-green;
+  color: $black;
+}
+
+.alert-error {
+  background-color: $pink;
+  border-color: $dark-pink;
+  color: $red;
+}
+

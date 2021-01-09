@@ -72,12 +72,14 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "djmoney",
 ]
 
 LOCAL_APPS = [
     "e_reimbursement.users.apps.UsersConfig",
     # Your stuff: custom apps go here
     "e_reimbursement.employees.apps.EmployeeConfig",
+    "e_reimbursement.reimbursement.apps.ReimbursementConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -135,6 +137,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "e_reimbursement.users.middlewares.IsAuthenticatedMiddleware",
+    "e_reimbursement.core.multitenancy.SetCurrentTenantFromUser",
 ]
 
 # STATIC
@@ -312,3 +317,6 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+HIGH_DECIMAL_MAX_DIGITS = 19
+LOW_DECIMAL_MAX_DIGITS = 12
+DECIMAL_PLACES = 2

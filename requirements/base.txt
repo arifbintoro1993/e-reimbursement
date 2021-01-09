@@ -26,3 +26,12 @@ django-cors-headers==3.6.0 # https://github.com/adamchainz/django-cors-headers
 
 # Django-multitenant
 django-multitenant==2.2.3 # https://github.com/citusdata/django-multitenant
+
+# Django money
+django-money==1.1 # https://github.com/django-money/django-money
+
+# Django-imagekit
+django-imagekit==4.0.2  # https://github.com/matthewwithanm/django-imagekit
+
+# Django braces
+django-braces==1.14.0  # https://github.com/brack3t/django-braces

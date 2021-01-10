@@ -10,10 +10,10 @@ class ReimbursementSerializers(serializers.ModelSerializer):
         fields = ("pk", "date_of_purchase", "category", "description", "amount", "attachment", "status")
         extra_kwargs = {
             "reject_url": {
-                "view_name": "api:reimbursement-do-reject", "lookup_field": "pk"
+                "view_name": "api:reimbursement-reject", "lookup_field": "pk"
             },
             "accept_url": {
-                "view_name": "api:reimbursement-do-accept", "lookup_field": "pk"
+                "view_name": "api:reimbursement-accept", "lookup_field": "pk"
             }
         }
 

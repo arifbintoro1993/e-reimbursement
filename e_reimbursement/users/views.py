@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView, TemplateView
 
+from e_reimbursement.users.api.serializers import UserSerializer
 User = get_user_model()
 
 
@@ -31,3 +32,8 @@ user_redirect_view = UserRedirectView.as_view()
 
 class UserListView(TemplateView):
     template_name = "users/user_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["serializer"] = UserSerializer
+        return context

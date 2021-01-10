@@ -41,3 +41,6 @@ libsass==0.20.0  # https://github.com/sass/libsass-python
 
 # django sass processor
 django-sass-processor==0.8  # https://github.com/jrief/django-sass-processor
+
+# drf datatables
+djangorestframework-datatables==0.5.2 # https://github.com/izimobil/django-rest-framework-datatables

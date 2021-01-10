@@ -22,7 +22,7 @@ class SetCurrentTenantFromUser(object):
         if request.path.strip("/").split("/")[0] == settings.ADMIN_URL.strip("^/"):
             set_current_tenant(None)
         else:
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and not request.user.is_superuser and not request.user.is_staff:
                 employee = self.get_employee(request)
                 set_current_tenant(employee)
             else:

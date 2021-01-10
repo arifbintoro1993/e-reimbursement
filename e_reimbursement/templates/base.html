@@ -121,17 +121,17 @@
         {% endblock %}
         
       
-        <div class="row page-content-section {% block extra_page_content_class %}{% endblock %}">
+        <div class="row page-content-section mt-4 {% block extra_page_content_class %}{% endblock %}">
             {% block filters %}
             {% endblock filters %}
           <div class="col-lg-12 scrollable">
-            {% block message %}
-            {% if messages %}
-            {% include "_message.html" %}
-            {% endif %}
-            {% endblock %}
-            
-
+            <div class="messages">
+              {% block message %}
+              {% if messages %}
+              {% include "_message.html" %}
+              {% endif %}
+              {% endblock %}
+            </div>
             {% block content %}
             {% endblock content %}
 

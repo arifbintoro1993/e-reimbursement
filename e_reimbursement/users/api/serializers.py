@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+
 from rest_framework import serializers
 
 from e_reimbursement.employees.models import Employee
@@ -12,11 +14,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "employee__name", "employee__bank_account_number", "url")
+        fields = ("pk", "email", "employee__name", "employee__bank_account_number", "url")
 
         extra_kwargs = {
             "url": {"view_name": "api:user-detail", "lookup_field": "username"}
         }
+        datatables_always_serialize = ("pk",)
+
+    def validate_employee__bank_account_number(self, value):
+        try:
+            value = int(value)
+            return value
+        except Exception:
+            raise serializers.ValidationError(_("Bank account number must be numeric")) 
 
     def create(self, validated_data):
         email = validated_data.pop("email")

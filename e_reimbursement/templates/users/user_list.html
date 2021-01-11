@@ -127,7 +127,7 @@
           table.ajax.reload(null, false);
         },
         error: function(error){
-          console.log(error.responseJSON);
+          $(".invalid-feedback").remove();
           $.each(error.responseJSON, function(field, error_msg) {
             field = $("[name="+field+"]")
             field.addClass("is-invalid");

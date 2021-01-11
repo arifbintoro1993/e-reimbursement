@@ -10,6 +10,12 @@
 {{ block.super }}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.css"/>
+<style>
+  #chartdiv {
+    width: 100%;
+    height: 200px;
+  }
+</style>
 {% endblock %}
 
 {% block header %}
@@ -36,6 +42,8 @@
 {% endblock %}
 
 {% block content %}
+<div id="chartdiv"></div>
+
 <div class="card">
     <div class="card-content p-4">
         <table class="table" id="reimbursements-table">
@@ -115,6 +123,52 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.js"></script>
+
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<script>
+  am4core.ready(function() {
+  
+  // Themes begin
+  am4core.useTheme(am4themes_animated);
+  // Themes end
+  
+  // Create chart instance
+  var chart = am4core.create("chartdiv", am4charts.PieChart);
+  
+  // Add data
+  chart.data = [ 
+    {
+      "category": "Transport",
+      "litres": {{ transport }}
+    },
+    {
+      "category": "Food & Beverages",
+      "litres": {{ fnb }}
+    },
+    {
+    "category": "Office Supplies",
+    "litres": {{ office_supplies }}
+    }
+  ];
+  
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = "litres";
+  pieSeries.dataFields.category = "country";
+  pieSeries.slices.template.stroke = am4core.color("#fff");
+  pieSeries.slices.template.strokeWidth = 2;
+  pieSeries.slices.template.strokeOpacity = 1;
+  
+  // This creates initial animation
+  pieSeries.hiddenState.properties.opacity = 1;
+  pieSeries.hiddenState.properties.endAngle = -90;
+  pieSeries.hiddenState.properties.startAngle = -90;
+  
+  }); // end am4core.ready()
+  </script>
 
 <script>
   $(document).ready(function(){

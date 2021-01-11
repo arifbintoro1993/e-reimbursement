@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load crispy_forms_tags %}
+{% load rest_framework %}
+
+{% block nav_reimbursement %}active{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.css"/>
+{% endblock %}
+
+{% block header %}
+<div class="row">
+  <div class="col-lg-12 no-padding">
+    <div class="header">
+      <div class="row header-inner">
+        <div class="col-lg-8">
+          <h1>{% trans "Reimbursement" %}</h1>
+        </div>
+        <div class="col-lg-4">
+          <div class="page-action">
+            <!-- <a href="#" class="btn btn-primary">{% trans "Create New" %}</a> -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-reimbursement-modal">
+              {% trans "Create New" %}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-content p-4">
+        <table class="table" id="reimbursements-table">
+            <thead>
+                <th>Date of Purchase</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Attachment</th>
+                <th>Status</th>
+                {% if request.user.is_superuser and request.user.is_staff %}
+                <th>Action</th>
+                {% endif %}
+            </thead>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block modal %}
+<div class="modal fade" id="create-reimbursement-modal" role="dialog" aria-labelledby="createReimbursementModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form enctype="multipart/form-data" id="create-reimbursement-form" action="." class="form-horizontal" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createReimbursementModalLabel">{% trans "Create Reimbursement" %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% csrf_token %}
+          {% render_form serializer %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-submit-close" data-dismiss="modal">{% trans "Close" %}</button>
+          <button type="button" class="btn btn-primary save-button">
+            <span id="save-text">{% trans "Save" %}</span>
+            <i id="save-icon" class=""></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+  
+
+{% block extra_js %}
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.3/daterangepicker.js"></script>
+
+<script>
+  $(document).ready(function(){
+    {% if request.user.is_superuser and request.user.is_staff %}
+    var table = $("#reimbursements-table").DataTable({
+        dom: "lrt<'d-flex justify-content-between datatables-info'ip>",
+        lengthChange: false,
+        pageLength: 25,
+        processing: false,
+        serverSide: true,
+        ajax: "{% url 'api:reimbursement-list' %}?format=datatables",
+        columns: [
+            {"data": "date_of_purchase"},
+            {"data": "category"},
+            {"data": "description"},
+            {"data": "amount"},
+            {"data": "attachment"},
+            {"data": "status"},
+            {"data": "pk"},
+        ],
+        columnDefs: [
+            {
+                "targets": [4],
+                "render": function (data, type, row){
+                    return "<img src='"+ data + "' class='img-thumbnail'>";
+                }
+            },
+            {
+                "targets": [6],
+                "render": function(data, type, row){
+                    html = '<div class="dropdown">' +
+                        '<button class="btn btn-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">' +
+                            '<i class="fas fa-ellipsis-h"></i>'+
+                        '</button>' + 
+                        '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
+                            '<a class="dropdown-item accept-button" data-pk="'+ data +'" href="">Accept</a>' +
+                            '<a class="dropdown-item reject-button" data-pk="'+ data +'" href="">Reject</a>' +
+                        '</div>'
+                    '</div>';
+                    if(row["status"] == "Submitted" || row["status"] == "On Progress"){
+                        return html;
+                    } else {
+                        return "";
+                    }
+                    
+                }
+            }
+        ]
+    });
+    {% else %}
+    var table = $("#reimbursements-table").DataTable({
+      dom: "lrt<'d-flex justify-content-between datatables-info'ip>",
+      lengthChange: false,
+      pageLength: 25,
+      processing: false,
+      serverSide: true,
+      ajax: "{% url 'api:reimbursement-list' %}?format=datatables",
+      columns: [
+          {"data": "date_of_purchase"},
+          {"data": "category"},
+          {"data": "description"},
+          {"data": "amount"},
+          {"data": "attachment"},
+          {"data": "status"},
+      ],
+      columnDefs: [
+        {
+          "targets": [4],
+          "render": function (data, type, row){
+              return "<img src='"+ data + "' class='img-thumbnail'>";
+          }
+        },
+      ]
+    });
+    {% endif %}
+
+    $("[name=date_of_purchase]").attr("readonly")
+    $('[name=date_of_purchase]').daterangepicker({
+        "opens": 'right',
+        "timePicker": false,
+        "singleDatePicker": true,
+        "showCustomRangeLabel": false,
+        "locale": {
+            "format": 'YYYY-MM-DD'
+        }
+      });
+
+    $(".save-button").on("click", function(e){
+      var frm = $('#create-reimbursement-form');
+      var formData = new FormData(frm[0]);
+      formData.append('attachment', $('[name=attachment]')[0].files[0])
+
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "{% url 'api:reimbursement-list' %}",
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function(jqXHR, settings){
+          jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+          $(".btn-submit-close").attr("disabled", "disabled");
+          $(".btn-submit-close").attr("disabled", "disabled");
+          $(".save-button").attr("disabled", "disabled");
+          $(".save-button #save-text").html("Loading");
+          $(".save-button #save-icon").addClass("fa fa-spinner fa-spin");
+        },
+        success: function(response){
+          $(".messages").prepend(
+            '<div class="row">' + 
+              '<div class="col-lg-12 message-container">' +
+                '<div class="alert alert-success alert-dismissible my-4" data-auto-dismiss>' +
+                  'successful create new reimbursement.' +
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                    '<span aria-hidden="true">×</span>' +
+                 ' </button>' +
+                '</div>' +
+              '</div>' +
+           ' </div>'
+          )
+          $(".modal").modal("hide");
+          table.ajax.reload(null, false);
+        },
+        error: function(error){
+          console.log(error.responseJSON);
+          $(".invalid-feedback").remove();
+          $.each(error.responseJSON, function(field, error_msg) {
+            field = $("[name="+field+"]")
+            field.addClass("is-invalid");
+            error_message = '<span id="error_1_id_'+field+'" class="invalid-feedback"><strong>'+error_msg+'</strong></span>';
+            $(error_message).insertAfter(field);
+          });
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".save-button").removeAttr("disabled", "disabled");
+          $(".save-button #save-text").html("Save");
+          $(".save-button #save-icon").removeClass("fa fa-spinner fa-spin");
+        }
+      });
+    });
+
+    $(document).on("click", ".reject-button", function(e){
+      e.preventDefault();
+      $.ajax({
+        type: "PUT",
+        url: "/api/reimbursement/"+ $(this).data("pk") +"/reject/",
+        data: {},
+        beforeSend: function(jqXHR, settings){
+          jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+        },
+        success: function(response){
+          table.ajax.reload(null, false);
+        },
+      });
+    });
+
+    $(document).on("click", ".accept-button", function(e){
+      e.preventDefault();
+      $.ajax({
+        type: "PUT",
+        url: "/api/reimbursement/"+ $(this).data("pk") +"/accept/",
+        data: {},
+        beforeSend: function(jqXHR, settings){
+          jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+        },
+        success: function(response){
+          table.ajax.reload(null, false);
+        },
+      });
+    });
+
+  });
+</script>
+{% endblock %}

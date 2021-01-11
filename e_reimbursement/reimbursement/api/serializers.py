@@ -7,7 +7,8 @@ from e_reimbursement.reimbursement.models import Reimbursement
 class ReimbursementSerializers(serializers.ModelSerializer):
     class Meta:
         model = Reimbursement
-        fields = ("pk", "date_of_purchase", "category", "description", "amount", "attachment", "status")
+        fields = ("date_of_purchase", "category", "description", "amount", "attachment", "status", "pk")
+        read_only_fields = ("status", )
         extra_kwargs = {
             "reject_url": {
                 "view_name": "api:reimbursement-reject", "lookup_field": "pk"
@@ -17,6 +18,15 @@ class ReimbursementSerializers(serializers.ModelSerializer):
             }
         }
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data.update({
+            "category": instance.get_category_display(),
+            "amount": "Rp. {}".format(instance.amount.amount),
+            "status": instance.get_status_display(),
+        })
+        return data
+
     def create(self, validated_data):
         reimbursement_data = {
             "date_of_purchase": validated_data.pop("date_of_purchase"),
@@ -24,7 +34,6 @@ class ReimbursementSerializers(serializers.ModelSerializer):
             "description": validated_data.pop("description"),
             "amount": validated_data.pop("amount"),
             "attachment": validated_data.pop("attachment"),
-            "status": validated_data.pop("status"),
             "employee": get_current_tenant()
 
         }

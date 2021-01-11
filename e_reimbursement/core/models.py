@@ -6,11 +6,11 @@ from django_multitenant.models import TenantModel
 from e_reimbursement.employees.models import Employee
 
 
-class EmployeeForeignKey(TenantForeignKey):
+class CustomForeignKey(TenantForeignKey):
     pass
 
 
-class EmployeeOneToOneField(TenantOneToOneField):
+class CustomOneToOneField(TenantOneToOneField):
     pass
 
 

@@ -74,6 +74,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "djmoney",
     "rest_framework_datatables",
+    'django_otp',
+    'django_otp.plugins.otp_email',
 ]
 
 LOCAL_APPS = [
@@ -81,6 +83,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     "e_reimbursement.employees.apps.EmployeeConfig",
     "e_reimbursement.reimbursement.apps.ReimbursementConfig",
+    "e_reimbursement.otp.apps.OTPConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

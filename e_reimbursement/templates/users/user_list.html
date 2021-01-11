@@ -125,6 +125,12 @@
           )
           $(".modal").modal("hide");
           table.ajax.reload(null, false);
+          $("#create-user-form").trigger("reset");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".save-button").removeAttr("disabled", "disabled");
+          $(".save-button #save-text").html("Save");
+          $(".save-button #save-icon").removeClass("fa fa-spinner fa-spin");
         },
         error: function(error){
           $(".invalid-feedback").remove();

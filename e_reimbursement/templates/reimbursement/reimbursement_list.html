@@ -28,7 +28,7 @@
         </div>
         <div class="col-lg-4">
           <div class="page-action">
-            {% if request.user.is_superuser and request.user.is_staff %}
+            {% if not request.user.is_superuser and not request.user.is_staff %}
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-reimbursement-modal">
               {% trans "Create New" %}
             </button>
@@ -106,10 +106,13 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-submit-close" data-dismiss="modal">{% trans "Close" %}</button>
-          <button type="button" class="btn btn-outline-primary resend-otp-button">{% trans "Resend OTP" %}</button>
+          <button type="button" class="btn btn-outline-primary resend-otp-button">
+            <span id="resend-otp-text">{% trans "Resend OTP" %}</span>
+            <i id="resend-otp-icon" class=""></i>
+          </button>
           <button type="button" class="btn btn-primary otp-button">
-            <span id="save-text">{% trans "Save" %}</span>
-            <i id="save-icon" class=""></i>
+            <span id="otp-text">{% trans "Verify" %}</span>
+            <i id="otp-icon" class=""></i>
           </button>
         </div>
       </form>
@@ -247,14 +250,20 @@
 
     $("[name=date_of_purchase]").attr("readonly")
     $('[name=date_of_purchase]').daterangepicker({
-        "opens": 'right',
-        "timePicker": false,
-        "singleDatePicker": true,
-        "showCustomRangeLabel": false,
-        "locale": {
-            "format": 'YYYY-MM-DD'
-        }
-      });
+      "opens": 'right',
+      "timePicker": false,
+      "singleDatePicker": true,
+      "showCustomRangeLabel": false,
+      "locale": {
+          "format": 'YYYY-MM-DD'
+      }
+    });
+
+    $('#otp-verification-modal, #create-reimbursement-modal').on('hidden.bs.modal', function () {
+      $(".invalid-feedback").remove();
+      $("form").trigger("reset");
+      $(".form-control").removeClass("is-invalid")
+    });
 
     $(".save-button").on("click", function(e){
       var frm = $('#create-reimbursement-form');
@@ -357,11 +366,38 @@
         data: $("#otp-verification-form").serialize(),
         beforeSend: function(jqXHR, settings){
           jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+          $(".btn-submit-close").attr("disabled", "disabled");
+          $(".btn-submit-close").attr("disabled", "disabled");
+          $(".otp-button").attr("disabled", "disabled");
+          $(".otp-button #otp-text").html("Verifying");
+          $(".otp-button #otp-icon").addClass("fa fa-spinner fa-spin");
+          $(".resend-otp-button").attr("disabled", "disabled");
         },
         success: function(response){
           table.ajax.reload(null, false);
           $("#otp-verification-modal").modal('hide');
           $("#otp-verification-form").trigger("reset");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".otp-button").removeAttr("disabled", "disabled");
+          $(".otp-button #otp-text").html("Verify");
+          $(".otp-button #otp-icon").removeClass("fa fa-spinner fa-spin");
+          $(".resend-otp-button").removeAttr("disabled", "disabled");
+        },
+        error: function(error){
+          $(".invalid-feedback").remove();
+          $.each(error.responseJSON, function(field, error_msg) {
+            field = $("[name="+field+"]")
+            field.addClass("is-invalid");
+            error_message = '<span id="error_1_id_'+field+'" class="invalid-feedback"><strong>'+error_msg+'</strong></span>';
+            $(error_message).insertAfter(field);
+          });
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".otp-button").removeAttr("disabled", "disabled");
+          $(".otp-button #otp-text").html("Verify");
+          $(".otp-button #otp-icon").removeClass("fa fa-spinner fa-spin");
+          $(".resend-otp-button").removeAttr("disabled", "disabled");
         }
       });
     });
@@ -371,11 +407,27 @@
       $.ajax({
         type: "POST",
         url: "{% url 'otp:resend_otp' %}",
-        data: {},
+        data: $("#otp-verification-form").serialize(),
         beforeSend: function(jqXHR, settings){
           jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+          $(".resend-otp-button").attr("disabled", "disabled");
+          $(".resend-otp-button #resend-otp-text").html("Sending");
+          $(".resend-otp-button #resend-otp-icon").addClass("fa fa-spinner fa-spin");
         },
         success: function(response){
+          var counter = 60;
+          setInterval(function() {
+            counter--;
+              if (counter >= 0) {
+                $(".resend-otp-button #resend-otp-text").html("Resend OTP in "+ counter +" seconds");
+              }
+              if (counter === 0) {
+                $(".resend-otp-button").removeAttr("disabled", "disabled");
+                $(".resend-otp-button #resend-otp-text").html("Resend OTP");
+                $(".resend-otp-button #resend-otp-icon").removeClass("fa fa-spinner fa-spin");
+                clearInterval(counter);
+              }
+            }, 1000);
         }
       })
     });

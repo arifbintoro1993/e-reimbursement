@@ -30,12 +30,15 @@ class OTPVerifyView(views.APIView):
 class ResendOTPView(views.APIView):
 
     def post(self, request, *args, **kwargs):
+        reimbursement_pk = request.POST.get("reimbursement_pk")
+        reimbursement = Reimbursement.objects.get(pk=reimbursement_pk)
         token = random_number_token()
         device, created = EmailDevice.objects.get_or_create(
             user=request.user,
             email=request.user.email,
             confirmed=False,
             name="default",
+            extra__reimbursement=reimbursement,
             defaults={"token": token}
         )
         if device:

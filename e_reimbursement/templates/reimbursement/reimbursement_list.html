@@ -22,10 +22,11 @@
         </div>
         <div class="col-lg-4">
           <div class="page-action">
-            <!-- <a href="#" class="btn btn-primary">{% trans "Create New" %}</a> -->
+            {% if request.user.is_superuser and request.user.is_staff %}
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-reimbursement-modal">
               {% trans "Create New" %}
             </button>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -73,6 +74,32 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-submit-close" data-dismiss="modal">{% trans "Close" %}</button>
           <button type="button" class="btn btn-primary save-button">
+            <span id="save-text">{% trans "Save" %}</span>
+            <i id="save-icon" class=""></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="otp-verification-modal" role="dialog" aria-labelledby="otpVerificationtModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="otp-verification-form" action="." class="form-horizontal" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="otpVerificationtModalLabel">{% trans "OTP Verification" %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% crispy otp_verification_form %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-submit-close" data-dismiss="modal">{% trans "Close" %}</button>
+          <button type="button" class="btn btn-outline-primary resend-otp-button">{% trans "Resend OTP" %}</button>
+          <button type="button" class="btn btn-primary otp-button">
             <span id="save-text">{% trans "Save" %}</span>
             <i id="save-icon" class=""></i>
           </button>
@@ -210,6 +237,12 @@
           )
           $(".modal").modal("hide");
           table.ajax.reload(null, false);
+          frm.trigger('reset');
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".btn-submit-close").removeAttr("disabled", "disabled");
+          $(".save-button").removeAttr("disabled", "disabled");
+          $(".save-button #save-text").html("Save");
+          $(".save-button #save-icon").removeClass("fa fa-spinner fa-spin");
         },
         error: function(error){
           console.log(error.responseJSON);
@@ -254,9 +287,43 @@
           jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
         },
         success: function(response){
-          table.ajax.reload(null, false);
+          console.log(response.reimbursement_pk)
+          $("#otp-verification-modal").modal('show');
+          $("#otp-verification-form [name=reimbursement_pk]").val(response.reimbursement_pk);
         },
       });
+    });
+
+    $(".otp-button").on("click", function(e){
+      e.preventDefault();
+      console.log($("#otp-verification-form").serialize());
+      $.ajax({
+        type: "POST",
+        url: "{% url 'otp:verify' %}",
+        data: $("#otp-verification-form").serialize(),
+        beforeSend: function(jqXHR, settings){
+          jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+        },
+        success: function(response){
+          table.ajax.reload(null, false);
+          $("#otp-verification-modal").modal('hide');
+          $("#otp-verification-form").trigger("reset");
+        }
+      });
+    });
+
+    $(".resend-otp-button").on("click", function(e){
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "{% url 'otp:resend_otp' %}",
+        data: {},
+        beforeSend: function(jqXHR, settings){
+          jqXHR.setRequestHeader("x-csrftoken", "{{ csrf_token }}");
+        },
+        success: function(response){
+        }
+      })
     });
 
   });

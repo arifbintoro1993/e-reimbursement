@@ -19,6 +19,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("reimbursements/", include("e_reimbursement.reimbursement.urls", namespace="reimbursements")),
+    path("otp/", include("e_reimbursement.otp.urls", namespace="otp")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development

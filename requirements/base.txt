@@ -44,3 +44,9 @@ django-sass-processor==0.8  # https://github.com/jrief/django-sass-processor
 
 # drf datatables
 djangorestframework-datatables==0.5.2 # https://github.com/izimobil/django-rest-framework-datatables
+
+# Django otp
+django-otp==1.0.2 # https://github.com/django-otp/django-otp
+
+# jedi - temporary fix incompatible jedi new release
+jedi==0.17.2 # https://github.com/davidhalter/jedi
